@@ -2,9 +2,16 @@ import time
 from datetime import datetime
 import csv
 import os
+import pytz
+
+LOCAL_TZ = pytz.timezone('US/Pacific')
 
 # 1 SETUP: Define the log file name
 LOG_FILE = "study_sessions.csv"
+
+def get_local_time():
+    """Helper to get current time in Seattle timezone."""
+    return datetime.now(pytz.utc).astimezone(LOCAL_TZ)
 
 def initialize_log():
     """Create the CSV file with headers if it doesn't exist."""
@@ -17,7 +24,7 @@ def initialize_log():
 def start_pomodoro(minutes, topic):
     """Handles the countdown logic."""
     seconds = minutes * 60
-    start_time = datetime.now().strftime("%H:%M") # Military Time
+    start_time = get_local_time().strftime("%H:%M")
 
     print(f"\n[STAY FOCUSED] Session started at {start_time}")
     print(f"Topic: {topic}")
